@@ -1,17 +1,39 @@
 package org.sicali;
 
-import io.javalin.Javalin;
 import org.sicali.config.configModule;
-import org.sicali.routes.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import io.javalin.Javalin;
+import io.javalin.json.JavalinJackson;
+
+import io.javalin.plugin.bundled.CorsPlugin;
 
 public class Main {
     public static void main(String[] args) {
 
-        Javalin app = Javalin.create()
-                .start(7000);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        System.out.println("✓ Servidor SICALI iniciado en http://localhost:7000");
+        Javalin app = Javalin.create(config -> {
 
+            config.jsonMapper(new JavalinJackson(mapper, true));
+
+            // ===== CORS UNIVERSAL =====
+            config.registerPlugin(new CorsPlugin(cors -> {
+                cors.addRule(rule -> {
+                    rule.anyHost();
+                    // O restringir: rule.allowHost("http://localhost:4200");
+                });
+            }));
+            // ===========================
+
+        }).start(7001);
+
+        System.out.println("✓ Servidor SICALI iniciado en http://localhost:8000");
 
         configModule.initUsuarioRoutes().register(app);
         configModule.initCicloRoutes().register(app);

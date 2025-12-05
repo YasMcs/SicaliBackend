@@ -1,6 +1,7 @@
 package org.sicali.services;
 
 import org.sicali.models.TutorEstudiante;
+import org.sicali.models.Usuario;
 import org.sicali.repositories.TutorEstudianteRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -53,7 +54,7 @@ public class TutorEstudianteService {
         if (tutorEstudiante.getIdEstudiante() == null) {
             throw new SQLException("El estudiante es requerido");
         }
-        if (tutorEstudiante.getIdTutor().getId_usuario() == tutorEstudiante.getIdEstudiante().getId_usuario()) {
+        if (tutorEstudiante.getIdTutor() == tutorEstudiante.getIdEstudiante()) {
             throw new SQLException("Un usuario no puede ser tutor de sí mismo");
         }
     }

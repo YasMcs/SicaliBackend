@@ -1,15 +1,15 @@
 package org.sicali.controllers;
 
-import org.sicali.config.DatabaseConfig;
-import org.sicali.models.Asistencia;
-
-import org.sicali.services.AsistenciaService;
-import io.javalin.http.Context;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
+import org.sicali.config.DatabaseConfig;
+import org.sicali.models.Asistencia;
+import org.sicali.services.AsistenciaService;
+
+import io.javalin.http.Context;
 
 public class AsistenciaController {
 
@@ -84,8 +84,8 @@ public class AsistenciaController {
     public static void obtenerPorFecha(Context ctx) {
         try (Connection conn = DatabaseConfig.getConnection()) {
             String fechaStr = ctx.pathParam("fecha");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date fecha = dateFormat.parse(fechaStr);
+            // Esperamos formato ISO date: yyyy-MM-dd
+            LocalDate fecha = LocalDate.parse(fechaStr);
             AsistenciaService service = new AsistenciaService(conn);
             List<Asistencia> asistencias = service.obtenerAsistenciasPorFecha(fecha);
             ctx.json(asistencias);

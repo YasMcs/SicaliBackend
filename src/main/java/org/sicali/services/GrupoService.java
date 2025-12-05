@@ -1,15 +1,20 @@
 package org.sicali.services;
 
-import org.sicali.models.Grupo;
-import org.sicali.repositories.GrupoRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.sicali.models.Grupo;
+import org.sicali.repositories.GrupoRepository;
+import org.sicali.repositories.PeriodoRepository;
+import org.sicali.repositories.UsuarioRepository;
+
 public class GrupoService {
     private GrupoRepository grupoRepository;
+    private Connection connection;
 
     public GrupoService(Connection connection) {
+        this.connection = connection;
         this.grupoRepository = new GrupoRepository(connection);
     }
 
@@ -52,17 +57,27 @@ public class GrupoService {
     }
 
     private void validarGrupo(Grupo grupo) throws SQLException {
-        if (grupo.getGrupo() == null || grupo.getGrupo().trim().isEmpty()) {
+        if (grupo.getNombre() == null || grupo.getNombre().trim().isEmpty()) {
             throw new SQLException("El nombre del grupo es requerido");
         }
-        if (grupo.getGrado() == null || grupo.getGrado().trim().isEmpty()) {
-            throw new SQLException("El grado es requerido");
+        if (grupo.getGrado() < 1 || grupo.getGrado() > 6) {
+            throw new SQLException("El grado debe estar entre 1 y 6");
         }
         if (grupo.getIdPeriodo() == null) {
             throw new SQLException("El periodo es requerido");
         }
+        // Verify periodo exists
+        PeriodoRepository periodoRepo = new PeriodoRepository(this.connection);
+        if (periodoRepo.obtenerPorId(grupo.getIdPeriodo().getIdPeriodo()) == null) {
+            throw new SQLException("Periodo con id " + grupo.getIdPeriodo().getIdPeriodo() + " no existe. Crea el periodo primero.");
+        }
         if (grupo.getIdDocente() == null) {
             throw new SQLException("El docente es requerido");
+        }
+        // Optionally validate docente exists
+        UsuarioRepository usuarioRepo = new UsuarioRepository(this.connection);
+        if (usuarioRepo.obtenerPorId(grupo.getIdDocente().getId_usuario()) == null) {
+            throw new SQLException("Docente con id " + grupo.getIdDocente().getId_usuario() + " no existe.");
         }
     }
 }

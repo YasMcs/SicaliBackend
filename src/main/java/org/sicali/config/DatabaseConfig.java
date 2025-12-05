@@ -11,14 +11,15 @@ public class DatabaseConfig {
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/sicali");
-        config.setUsername("user");
-        config.setPassword("1234");
+        config.setJdbcUrl("jdbc:mysql://98.84.235.103:3306/sicali?allowPublicKeyRetrieval=true&useSSL=false");
+        config.setUsername("sicali");
+        config.setPassword("passw0rd");
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
         config.setConnectionTimeout(30000);
         dataSource = new HikariDataSource(config);
     }
+
 
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();

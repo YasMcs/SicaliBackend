@@ -1,11 +1,12 @@
 package org.sicali.services;
 
-import org.sicali.models.Asistencia;
-import org.sicali.repositories.AsistenciaRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.sicali.models.Asistencia;
+import org.sicali.repositories.AsistenciaRepository;
 
 public class AsistenciaService {
     private AsistenciaRepository asistenciaRepository;
@@ -48,9 +49,9 @@ public class AsistenciaService {
         return asistencias;
     }
 
-    public List<Asistencia> obtenerAsistenciasPorFecha(Date fecha) throws SQLException {
+    public List<Asistencia> obtenerAsistenciasPorFecha(LocalDate fecha) throws SQLException {
         List<Asistencia> asistencias = asistenciaRepository.obtenerTodos();
-        asistencias.removeIf(a -> !a.getFecha().equals(fecha));
+        asistencias.removeIf(a -> a.getFecha() == null || !a.getFecha().equals(fecha));
         return asistencias;
     }
 
@@ -64,7 +65,7 @@ public class AsistenciaService {
         }
 
         long asistenciasTotales = asistencias.size();
-        long asistenciasPresentes = asistencias.stream().filter(Asistencia::isAsistencia).count();
+        long asistenciasPresentes = asistencias.stream().filter(a -> a.getEstado() == org.sicali.models.EstadoAsistencia.Asistencia).count();
 
         return (asistenciasPresentes * 100.0) / asistenciasTotales;
     }

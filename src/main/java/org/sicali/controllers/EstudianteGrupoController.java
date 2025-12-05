@@ -1,12 +1,14 @@
 package org.sicali.controllers;
 
-import org.sicali.config.DatabaseConfig;
-import org.sicali.models.EstudianteGrupo;
-import org.sicali.services.EstudianteGrupoService;
-import io.javalin.http.Context;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
+
+import org.sicali.config.DatabaseConfig;
+import org.sicali.models.EstudianteGrupo;
+import org.sicali.services.EstudianteGrupoService;
+
+import io.javalin.http.Context;
 
 public class EstudianteGrupoController {
 
@@ -73,7 +75,8 @@ public class EstudianteGrupoController {
         try (Connection conn = DatabaseConfig.getConnection()) {
             int idGrupoAsignatura = Integer.parseInt(ctx.pathParam("idGrupoAsignatura"));
             EstudianteGrupoService service = new EstudianteGrupoService(conn);
-            List<EstudianteGrupo> estudiantesGrupos = service.obtenerEstudiantesPorGrupoAsignatura(idGrupoAsignatura);
+            // La implementación actual usa 'grupo' (id_grupo) en lugar de grupo-asignatura.
+            List<EstudianteGrupo> estudiantesGrupos = service.obtenerEstudiantesPorGrupo(idGrupoAsignatura);
             ctx.json(estudiantesGrupos);
         } catch (Exception e) {
             ctx.status(500).json("Error: " + e.getMessage());

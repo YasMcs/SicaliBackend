@@ -1,11 +1,12 @@
 package org.sicali.services;
 
-import org.sicali.models.Ciclo;
-import org.sicali.repositories.CicloRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.sicali.models.Ciclo;
+import org.sicali.repositories.CicloRepository;
 
 public class CicloService {
     private CicloRepository cicloRepository;
@@ -41,10 +42,11 @@ public class CicloService {
     }
 
     public Ciclo obtenerCicloActivo() throws SQLException {
-        Date hoy = new Date();
+        LocalDate hoy = LocalDate.now();
         List<Ciclo> ciclos = cicloRepository.obtenerTodos();
         for (Ciclo ciclo : ciclos) {
-            if (ciclo.getFechaInicio().before(hoy) && ciclo.getFechaFin().after(hoy)) {
+            if (ciclo.getFechaInicio() != null && ciclo.getFechaFin() != null &&
+                    ( !hoy.isBefore(ciclo.getFechaInicio()) ) && ( !hoy.isAfter(ciclo.getFechaFin()) )) {
                 return ciclo;
             }
         }
@@ -52,13 +54,16 @@ public class CicloService {
     }
 
     private void validarCiclo(Ciclo ciclo) throws SQLException {
+        if (ciclo.getNombre() == null || ciclo.getNombre().trim().isEmpty()) {
+            throw new SQLException("El nombre del ciclo es requerido");
+        }
         if (ciclo.getFechaInicio() == null) {
             throw new SQLException("La fecha de inicio es requerida");
         }
         if (ciclo.getFechaFin() == null) {
             throw new SQLException("La fecha de fin es requerida");
         }
-        if (ciclo.getFechaInicio().after(ciclo.getFechaFin())) {
+        if (ciclo.getFechaInicio().isAfter(ciclo.getFechaFin())) {
             throw new SQLException("La fecha de inicio no puede ser posterior a la fecha de fin");
         }
     }

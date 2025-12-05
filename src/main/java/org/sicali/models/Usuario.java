@@ -7,13 +7,20 @@ public class Usuario {
     private String ape_m;
     private String curp;
     private String rfc;
-    private String sexo;
+    private Sexo sexo;
     private String usuario;
     private String password;
-    private String rol;
-    private boolean habilitado;
+    private Rol rol;
+    private EstadoUsuario estado;
+    private java.time.LocalDateTime created_at;
+    private java.time.LocalDateTime updated_at;
 
-    public Usuario(int id_usuario, String nombre, String ape_p, String ape_m, String curp, String rfc, String sexo, String usuario, String password, String rol, boolean habilitado) {
+    public Usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+    public Usuario(){}
+
+    public Usuario(int id_usuario, String nombre, String ape_p, String ape_m, String curp, String rfc, Sexo sexo, String usuario, String password, Rol rol, EstadoUsuario estado, java.time.LocalDateTime created_at, java.time.LocalDateTime updated_at) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.ape_p = ape_p;
@@ -24,7 +31,9 @@ public class Usuario {
         this.usuario = usuario;
         this.password = password;
         this.rol = rol;
-        this.habilitado = habilitado;
+        this.estado = estado;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public int getId_usuario() { return id_usuario; }
@@ -45,8 +54,8 @@ public class Usuario {
     public String getRfc() { return rfc; }
     public void setRfc(String rfc) { this.rfc = rfc; }
 
-    public String getSexo() { return sexo; }
-    public void setSexo(String sexo) { this.sexo = sexo; }
+    public Sexo getSexo() { return sexo; }
+    public void setSexo(Sexo sexo) { this.sexo = sexo; }
 
     public String getUsuario() { return usuario; }
     public void setUsuario(String usuario) { this.usuario = usuario; }
@@ -54,9 +63,15 @@ public class Usuario {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public String getRol() { return rol; }
-    public void setRol(String rol) { this.rol = rol; }
+    public Rol getRol() { return rol; }
+    public void setRol(Rol rol) { this.rol = rol; }
 
-    public boolean isHabilitado() { return habilitado; }
-    public void setHabilitado(boolean habilitado) { this.habilitado = habilitado; }
+    public EstadoUsuario getEstado() { return estado; }
+    public void setEstado(EstadoUsuario estado) { this.estado = estado; }
+
+    public java.time.LocalDateTime getCreated_at() { return created_at; }
+    public void setCreated_at(java.time.LocalDateTime created_at) { this.created_at = created_at; }
+
+    public java.time.LocalDateTime getUpdated_at() { return updated_at; }
+    public void setUpdated_at(java.time.LocalDateTime updated_at) { this.updated_at = updated_at; }
 }

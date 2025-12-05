@@ -4,6 +4,7 @@ public class TutorEstudiante {
     private Usuario idTutor;
     private Usuario idEstudiante;
 
+    public TutorEstudiante(){}
     public TutorEstudiante(Usuario idTutor, Usuario idEstudiante) {
         this.idTutor = idTutor;
         this.idEstudiante = idEstudiante;

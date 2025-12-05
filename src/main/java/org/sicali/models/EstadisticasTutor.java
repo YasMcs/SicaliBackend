@@ -8,16 +8,16 @@ public class EstadisticasTutor {
     private String apellidoMaterno;
     private int idGrupo;
     private String nombreGrupo;
-    private String grado;
+    private int grado;
     private int idPeriodo;
     private String nombrePeriodo;
     private String nombreAsignatura;
-    private int calificacion;
+    private double calificacion;
     private double porcentajeAsistencia;
 
     public EstadisticasTutor(int idTutor, int idEstudiante, String nombreEstudiante,
                              String apellidoPaterno, String apellidoMaterno,
-                             int idGrupo, String nombreGrupo, String grado,
+                             int idGrupo, String nombreGrupo, int grado,
                              int idPeriodo, String nombrePeriodo,
                              String nombreAsignatura, int calificacion,
                              double porcentajeAsistencia) {
@@ -69,7 +69,7 @@ public class EstadisticasTutor {
         return nombreGrupo;
     }
 
-    public String getGrado() {
+    public int getGrado() {
         return grado;
     }
 
@@ -85,7 +85,7 @@ public class EstadisticasTutor {
         return nombreAsignatura;
     }
 
-    public int getCalificacion() {
+    public double getCalificacion() {
         return calificacion;
     }
 
@@ -122,7 +122,7 @@ public class EstadisticasTutor {
         this.nombreGrupo = nombreGrupo;
     }
 
-    public void setGrado(String grado) {
+    public void setGrado(int grado) {
         this.grado = grado;
     }
 

@@ -1,10 +1,11 @@
 package org.sicali.services;
 
-import org.sicali.models.Usuario;
-import org.sicali.repositories.UsuarioRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.sicali.models.Usuario;
+import org.sicali.repositories.UsuarioRepository;
 
 public class UsuarioService {
     private UsuarioRepository usuarioRepository;
@@ -41,7 +42,7 @@ public class UsuarioService {
 
     public List<Usuario> obtenerUsuariosPorRol(String rol) throws SQLException {
         List<Usuario> usuarios = usuarioRepository.obtenerTodos();
-        usuarios.removeIf(u -> !u.getRol().equals(rol));
+        usuarios.removeIf(u -> u.getRol() == null || !u.getRol().name().equalsIgnoreCase(rol));
         return usuarios;
     }
 
@@ -55,7 +56,7 @@ public class UsuarioService {
         if (usuario.getPassword() == null || usuario.getPassword().trim().isEmpty()) {
             throw new SQLException("La contraseña es requerida");
         }
-        if (usuario.getRol() == null || usuario.getRol().trim().isEmpty()) {
+        if (usuario.getRol() == null) {
             throw new SQLException("El rol es requerido");
         }
     }

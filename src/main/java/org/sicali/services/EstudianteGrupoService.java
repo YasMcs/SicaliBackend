@@ -1,10 +1,11 @@
 package org.sicali.services;
 
-import org.sicali.models.EstudianteGrupo;
-import org.sicali.repositories.EstudianteGrupoRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.sicali.models.EstudianteGrupo;
+import org.sicali.repositories.EstudianteGrupoRepository;
 
 public class EstudianteGrupoService {
     private EstudianteGrupoRepository estudianteGrupoRepository;
@@ -30,54 +31,40 @@ public class EstudianteGrupoService {
         return estudianteGrupoRepository.obtenerTodos();
     }
 
-    public void actualizarCalificacion(int idGrupoAsignatura, int idEstudiante, int nuevaCalificacion) throws SQLException {
-        validarCalificacion(nuevaCalificacion);
-        EstudianteGrupo estudianteGrupo = estudianteGrupoRepository.obtenerPorIds(idGrupoAsignatura, idEstudiante);
-        if (estudianteGrupo == null) {
-            throw new SQLException("Estudiante-Grupo no encontrado");
-        }
-        estudianteGrupo.setCalificacion(nuevaCalificacion);
-        estudianteGrupoRepository.actualizar(estudianteGrupo);
+    public void eliminarEstudianteGrupo(int idGrupo, int idEstudiante) throws SQLException {
+        estudianteGrupoRepository.eliminar(idGrupo, idEstudiante);
     }
 
-    public void eliminarEstudianteGrupo(int idGrupoAsignatura, int idEstudiante) throws SQLException {
-        estudianteGrupoRepository.eliminar(idGrupoAsignatura, idEstudiante);
-    }
-
-    public List<EstudianteGrupo> obtenerEstudiantesPorGrupoAsignatura(int idGrupoAsignatura) throws SQLException {
+    public List<EstudianteGrupo> obtenerEstudiantesPorGrupo(int idGrupo) throws SQLException {
         List<EstudianteGrupo> estudiantesGrupos = estudianteGrupoRepository.obtenerTodos();
-        estudiantesGrupos.removeIf(eg -> eg.getIdGrupoAsignatura().getIdGrupoAsignatura() != idGrupoAsignatura);
+        estudiantesGrupos.removeIf(eg -> eg.getGrupo() == null || eg.getGrupo().getIdGrupo() != idGrupo);
         return estudiantesGrupos;
     }
 
     public List<EstudianteGrupo> obtenerGruposPorEstudiante(int idEstudiante) throws SQLException {
         List<EstudianteGrupo> estudiantesGrupos = estudianteGrupoRepository.obtenerTodos();
-        estudiantesGrupos.removeIf(eg -> eg.getIdEstudiante().getId_usuario() != idEstudiante);
+        estudiantesGrupos.removeIf(eg -> eg.getEstudiante() == null || eg.getEstudiante().getId_usuario() != idEstudiante);
         return estudiantesGrupos;
     }
 
     public double calcularPromedioEstudiante(int idEstudiante) throws SQLException {
-        List<EstudianteGrupo> estudiantesGrupos = obtenerGruposPorEstudiante(idEstudiante);
-        if (estudiantesGrupos.isEmpty()) {
-            return 0.0;
-        }
-        double suma = estudiantesGrupos.stream().mapToInt(EstudianteGrupo::getCalificacion).sum();
-        return suma / estudiantesGrupos.size();
+        // El cálculo de calificaciones ahora debe realizarse a partir de la tabla CALIFICACION.
+        // Esta implementación devuelve 0.0 y debe ser reemplazada por un servicio que lea CALIFICACION.
+        return 0.0;
+    }
+
+    // Compatibilidad temporal: mantiene el método que algunos controladores aún llaman.
+    // Indica al cliente que las calificaciones ya no se actualizan desde EstudianteGrupo.
+    public void actualizarCalificacion(int idGrupoAsignatura, int idEstudiante, int nuevaCalificacion) throws SQLException {
+        throw new SQLException("Las calificaciones ahora se manejan en la entidad CALIFICACION. Use el endpoint de Calificacion para crear/actualizar calificaciones.");
     }
 
     private void validarEstudianteGrupo(EstudianteGrupo estudianteGrupo) throws SQLException {
-        if (estudianteGrupo.getIdGrupoAsignatura() == null) {
-            throw new SQLException("El grupo-asignatura es requerido");
+        if (estudianteGrupo.getGrupo() == null) {
+            throw new SQLException("El grupo es requerido");
         }
-        if (estudianteGrupo.getIdEstudiante() == null) {
+        if (estudianteGrupo.getEstudiante() == null) {
             throw new SQLException("El estudiante es requerido");
-        }
-        validarCalificacion(estudianteGrupo.getCalificacion());
-    }
-
-    private void validarCalificacion(int calificacion) throws SQLException {
-        if (calificacion < 0 || calificacion > 100) {
-            throw new SQLException("La calificación debe estar entre 0 y 100");
         }
     }
 }

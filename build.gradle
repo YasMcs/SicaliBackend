@@ -1,50 +1,49 @@
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' // Plugin para crear un JAR ejecutable con dependencias
 }
 
-group = 'org.sicali'
-version = '1.0'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
+}
+
+application {
+    mainClass = 'org.sicali.Main'
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-
-    // Dependencias del proyecto
-    implementation("io.javalin:javalin-bundle:6.7.0")
-    implementation("com.mysql:mysql-connector-j:9.3.0")
-    implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("com.password4j:password4j:1.6.3")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-    implementation("ch.qos.logback:logback-core:1.5.19")
-    implementation("ch.qos.logback:logback-classic:1.5.19")
-}
-
-test {
-    useJUnitPlatform()
+    implementation 'io.javalin:javalin:6.1.3'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+    implementation 'org.slf4j:slf4j-simple:2.0.10'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'io.javalin:javalin-bundle:5.6.2'
 }
 
 jar {
     manifest {
-        attributes(
-                'Main-Class': 'org.sicali.Main' // tu clase principal
-        )
+        attributes 'Main-Class': 'org.sicali.Main'
     }
 }
 
 shadowJar {
+    archiveFileName = 'app.jar'
+    mergeServiceFiles()
+
     manifest {
-        attributes(
-                'Main-Class': 'org.sicali.Main'
-        )
+        attributes 'Main-Class': 'org.sicali.Main'
     }
-    archiveBaseName.set('sicali')
-    archiveVersion.set('1.0')
-    archiveClassifier.set('')
 }
+
+tasks.build.dependsOn shadowJar

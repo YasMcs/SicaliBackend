@@ -1,39 +1,37 @@
 package org.sicali.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Ciclo {
     private int idCiclo;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private String nombre;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
-    public Ciclo(int idCiclo, Date fechaInicio, Date fechaFin) {
+    // Constructor por defecto requerido por Jackson
+    public Ciclo() {}
+
+
+    // Allow deserialization from a numeric id (e.g. "idCiclo": 1)
+    public Ciclo(int idCiclo) {
         this.idCiclo = idCiclo;
+    }
+    public Ciclo(int idCiclo, String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+        this.idCiclo = idCiclo;
+        this.nombre = nombre;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
 
-    public int getIdCiclo() {
-        return idCiclo;
-    }
+    public int getIdCiclo() { return idCiclo; }
+    public void setIdCiclo(int idCiclo) { this.idCiclo = idCiclo; }
 
-    public void setIdCiclo(int idCiclo) {
-        this.idCiclo = idCiclo;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
 
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Date getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
-    }
+    public LocalDate getFechaFin() { return fechaFin; }
+    public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
 }

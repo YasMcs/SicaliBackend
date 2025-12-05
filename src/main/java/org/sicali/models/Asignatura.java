@@ -6,6 +6,8 @@ public class Asignatura {
     private String codigo;
     private String descripcion;
 
+    public Asignatura(){}
+
     public Asignatura(int idAsignatura, String nombre, String codigo, String descripcion) {
         this.idAsignatura = idAsignatura;
         this.nombre = nombre;

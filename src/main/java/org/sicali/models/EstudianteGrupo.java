@@ -1,37 +1,37 @@
 package org.sicali.models;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class EstudianteGrupo {
-    private GrupoAsignatura idGrupoAsignatura;
-    private Usuario idEstudiante;
-    private int calificacion;
+    private Usuario estudiante;
+    private Grupo grupo;
+    private LocalDate fechaInscripcion;
+    private EstadoInscripcion estado;
+    private LocalDateTime created_at;
 
-    public EstudianteGrupo(GrupoAsignatura idGrupoAsignatura, Usuario idEstudiante, int calificacion) {
-        this.idGrupoAsignatura = idGrupoAsignatura;
-        this.idEstudiante = idEstudiante;
-        this.calificacion = calificacion;
+    public EstudianteGrupo() {}
+
+    public EstudianteGrupo(Usuario estudiante, Grupo grupo, LocalDate fechaInscripcion, EstadoInscripcion estado, LocalDateTime created_at) {
+        this.estudiante = estudiante;
+        this.grupo = grupo;
+        this.fechaInscripcion = fechaInscripcion;
+        this.estado = estado;
+        this.created_at = created_at;
     }
 
-    public GrupoAsignatura getIdGrupoAsignatura() {
-        return idGrupoAsignatura;
-    }
+    public Usuario getEstudiante() { return estudiante; }
+    public void setEstudiante(Usuario estudiante) { this.estudiante = estudiante; }
 
-    public void setIdGrupoAsignatura(GrupoAsignatura idGrupoAsignatura) {
-        this.idGrupoAsignatura = idGrupoAsignatura;
-    }
+    public Grupo getGrupo() { return grupo; }
+    public void setGrupo(Grupo grupo) { this.grupo = grupo; }
 
-    public Usuario getIdEstudiante() {
-        return idEstudiante;
-    }
+    public LocalDate getFechaInscripcion() { return fechaInscripcion; }
+    public void setFechaInscripcion(LocalDate fechaInscripcion) { this.fechaInscripcion = fechaInscripcion; }
 
-    public void setIdEstudiante(Usuario idEstudiante) {
-        this.idEstudiante = idEstudiante;
-    }
+    public EstadoInscripcion getEstado() { return estado; }
+    public void setEstado(EstadoInscripcion estado) { this.estado = estado; }
 
-    public int getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
-    }
+    public LocalDateTime getCreated_at() { return created_at; }
+    public void setCreated_at(LocalDateTime created_at) { this.created_at = created_at; }
 }
